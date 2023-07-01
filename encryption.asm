@@ -1,3 +1,11 @@
+// 16384 or 0100 0000 0000 0000 in binary store it to a Data register to be shifted to 32768 or 1000 0000 0000 0000 in binary
+@16384
+D=A
+D=D+A
+// Store the value 32768 to the variable MSB which will be used for masking the most significant bit to indicate if there should be a rotation or not
+@MSB
+M=D
+
 //// Start the encryption process ////
 
 /// Store Li ///
@@ -87,3 +95,31 @@ D=!M
 D=D&M
 @R0
 M=D
+
+//// Rotate Key ////
+
+// Check if the MSB is 1
+@R1
+D=M
+@128
+D=D&A
+@NOROTATION
+D;JEQ
+
+// If true rotate bit
+@R1
+D=M+1
+D=M+D
+@255
+D=D&A
+@R1
+M=D
+@SKIP
+0;JMP
+
+(NOROTATION)
+@R1
+D=M
+M=M+D
+
+(SKIP)
