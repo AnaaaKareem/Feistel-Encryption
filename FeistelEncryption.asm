@@ -51,8 +51,8 @@ D=M
 // Load the value of the most significant bit mask from the memory register then use bitwise and with the data register which stores the value to be rotated
 @MSB
 D=D&M
-// If the mask equals zero jump to SKIP if it is equal to one continue
-@SKIP
+// If the mask equals zero jump to FINROTATION if it is equal to one continue
+@FINROTATION
 D;JEQ
 
 // Load the value stored in RAM[1] shift it to the left by one and add a bit in the beginning
@@ -64,14 +64,13 @@ M=M+D
 (SUBCOUNT)
 // Subtract the RSCOUNT by 1
 @RSCOUNT
-D=M
-M=D-1
+M=M-1
 // Loop back at the start
 @LOOP
 0;JMP     // jump to POWERLOOP to repeat the loop
 
 // Shift to the left and don't add a bit (don't do any bit rotations)
-(SKIP)
+(FINROTATION)
 @R3
 D=M
 M=M+D
