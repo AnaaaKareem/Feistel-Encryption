@@ -1,3 +1,11 @@
+(BEGINNING)
+
+// If this RAM slot is reset to zero perform new encryption calculations otherwise keep looping until a new value is required to encrypt
+@R0
+D=M
+@BEGINNING
+D;JNE
+
 //// Masking The Left Section Of The Value ////
 // 32640 or 0111 1111 1000 0000 in binary store it to a Data register to be shifted to 65280 or 1111 1111 0000 0000 in binary
 @32640
@@ -373,6 +381,11 @@ M=M-1
 // The shifting is done
 (DONE)
 
+@R0
+D=M
+@BEGINNING
+D;JNE
+
 // Load the left that is in R2 then store it in the Data register
 @R2
 D=M
@@ -382,3 +395,5 @@ D=M|D
 // Store the value in memory location R0
 @R0
 M=D
+@BEGINNING
+0;JMP
