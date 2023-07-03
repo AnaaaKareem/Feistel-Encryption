@@ -351,7 +351,7 @@ M=D
 
 //// Start adding the left 8 bits and the right 8bits together ////
 
-// Reset the right shift counter for the use to shift the left part back to its original place
+// Reset the right shift counter for the use to shift the right part to the left
 @8
 D=A
 // Store the value 8 in the memory location RSCOUNT
@@ -367,7 +367,7 @@ D=M
 D;JEQ
 
 // Shift to the left by adding the value in R3 to itself using the Data register and Memory register
-@R3
+@R2
 D=M
 M=M+D
 
