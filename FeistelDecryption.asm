@@ -91,6 +91,51 @@ M=M+D
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
+// Rotate till we start with K3
+@3
+D=A
+@LASTKEYCOUNT
+M=D
+
+(LASTKEYLOOP)
+@LASTKEYCOUNT
+D=M
+@LASTKEYDONE
+D;JEQ
+
+// Check if the MSB is 1
+@R1
+D=M
+@128
+D=D&A
+@SHIFTLASTKEY
+D;JEQ
+
+// If true rotate bit
+@R1
+D=M+1
+D=M+D
+@255
+D=D&A
+@R1
+M=D
+@SKIP
+0;JMP
+
+(SHIFTLASTKEY)
+@R1
+D=M
+M=M+D
+
+(SKIP)
+@LASTKEYCOUNT
+M=M-1
+@LASTKEYLOOP
+0;JMP
+(LASTKEYDONE)
+
+/////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 // Create an encryption counter for the first 3 rounds
 @4
 D=A
@@ -108,18 +153,18 @@ D;JEQ
 
 /// Store Li ///
 // Load the Li using the Address register to the Data register to store it
-@R3
+@R2
 D=M
 // Store Li in the Data register to the Memory register to be used to calculate the Ri+1
-@Li
+@Ri
 M=D
 
 /// Li+1 = Ri ///
 // Load Ri 
-@R2
+@R3
 D=M
 // Store it to create Li+1
-@R3
+@R2
 M=D
 
 // ¬Ki //
@@ -132,7 +177,7 @@ M=D
 
 // F(Ri, Ki) = Ri ⊕ ¬Ki //
 
-@R2
+@R3
 D=M
 
 @R1
@@ -141,7 +186,7 @@ D=D&M
 @buffer
 M=D
 
-@R2
+@R3
 D=M
 
 @R1
@@ -168,7 +213,7 @@ M=D
 
 // Ri+1 = Li ⊕ F(Ri, Ki) //
 
-@Li
+@Ri
 D=M
 
 @FUNCTION
@@ -177,7 +222,7 @@ D=D&M
 @buffer
 M=D
 
-@Li
+@Ri
 D=M
 
 @FUNCTION
