@@ -1,13 +1,13 @@
 # Feistel-Encryption
 
-The Value: 1101 0101 | 1010 1111
+The Value: 1101 0101 1010 1111
 The Initial Key: 11001100
 
 // Derived Keys
 K0: 1100 1100 // Initial Key
 K1: 1001 1001 // Rotated 1 times
 K2: 0011 0011 // Rotated 1 times
-K3: 1100 1100 // Rotated 2 times
+K3: 0110 0110 // Rotated 2 times
 
 // Split The Value into 2 parts Left and Right
 
@@ -60,7 +60,7 @@ R3 = 0100 1001 ⊕ 0100 1100
 R3 = 0000 0101
 
 ## Round 4
-K3: 1100 1100
+K3: 0110 0110
 R3: 0000 0101
 L3: 1000 0000
 
@@ -68,10 +68,10 @@ L4 = R3
 L4 = 0000 0101
 
 F(R3, K3) = R3 ⊕ ¬K3
-F(0000 0101, 1100 1100) = 0000 0101 ⊕ 0011 0011 = 0011 0110
+F(0000 0101, 1100 1100) = 0000 0101 ⊕ 1001 1001 = 1001 1100
 
 R4 = L3 ⊕ F(R3, K3)
-R4 = 1000 0000 ⊕ 0011 0110
-R4 = 1011 0110
+R4 = 1000 0000 ⊕ 1001 1100
+R4 = 0001 1100
 
-Value After Encryption: 0000 0101 | 1011 0110
+Value After Encryption: 0000 0101 0001 1100
