@@ -74,4 +74,4 @@ R4 = L3 ⊕ F(R3, K3)
 R4 = 1000 0000 ⊕ 1001 1100
 R4 = 0001 1100
 
-Value After Encryption: 0000 0101 0001 1100
+Final Value After Encryption: 0000 0101 0001 1100

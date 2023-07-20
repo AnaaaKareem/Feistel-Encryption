@@ -246,7 +246,7 @@ D=M
 @DONE
 D;JEQ
 
-// Shift to the left by adding the value in R2 to itself using the Data register and Memory register
+// Shift to the left by adding the value in R3 (Left part) to itself using the Data register and Memory register
 @R3
 D=M
 M=M+D
