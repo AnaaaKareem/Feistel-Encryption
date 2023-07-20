@@ -92,7 +92,7 @@ M=M+D
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Create an encryption counter for the first 3 rounds
-
+@4
 D=A
 // Store the value three in the variable ENCRYPTCOUNT
 @ENCRYPTCOUNT
@@ -103,7 +103,7 @@ M=D
 (ENCRYPTLOOP)
 @ENCRYPTCOUNT
 D=M
-
+@FINISHED
 D;JEQ
 
 /// Store Li ///
@@ -246,7 +246,7 @@ D=M
 @DONE
 D;JEQ
 
-// Shift to the left by adding the value in R3 (Left part) to itself using the Data register and Memory register
+// Shift to the left by adding the value in R2 to itself using the Data register and Memory register
 @R3
 D=M
 M=M+D
