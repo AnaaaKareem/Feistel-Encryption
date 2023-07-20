@@ -92,7 +92,7 @@ M=M+D
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Create an encryption counter for the first 3 rounds
-@3
+@4
 D=A
 // Store the value three in the variable ENCRYPTCOUNT
 @ENCRYPTCOUNT
@@ -103,7 +103,7 @@ M=D
 (ENCRYPTLOOP)
 @ENCRYPTCOUNT
 D=M
-@GOTO4
+@FINISHED
 D;JEQ
 
 /// Store Li ///
@@ -225,133 +225,13 @@ M=M+D
 M=M-1
 @ENCRYPTLOOP
 0;JMP
-
-(GOTO4)
-
-//// Round 4 or Last Round ////
-
-/// Rotate Key ///
-// Check if the MSB is 1
-@R1
-D=M
-@128
-D=D&A
-@NOROTATION2
-D;JEQ
-
-// If true rotate bit
-@R1
-D=M+1
-D=M+D
-@255
-D=D&A
-@R1
-M=D
-@SKIP2
-0;JMP
-
-(NOROTATION2)
-@R1
-D=M
-M=M+D
-
-(SKIP2)
-
-//// Round 4 Encryption ////
-
-/// Store Li ///
-// Load the Li using the Address register to the Data register to store it
-@R3
-D=M
-// Store Li in the Data register to the Memory register to be used to calculate the Ri+1
-@Li
-M=D
-
-/// Li+1 = Ri ///
-// Load Ri 
-@R2
-D=M
-// Store it to create Li+1
-@R3
-M=D
-
-// ¬Ki //
-@R1
-D=!M
-@255
-D=D&A
-@R1
-M=D
-
-// F(Ri, Ki) = Ri ⊕ ¬Ki //
-
-@R2
-D=M
-
-@R1
-D=D&M
-
-@buffer
-M=D
-
-@R2
-D=M
-
-@R1
-D=D|M
-
-@buffer1
-M=D
-
-@buffer
-D=!M
-
-@buffer1
-D=D&M
-@FUNCTION
-M=D
-
-// Ki //
-@R1
-D=!M
-@255
-D=D&A
-@R1
-M=D
-
-// Ri+1 = Li ⊕ F(Ri, Ki) //
-
-@Li
-D=M
-
-@FUNCTION
-D=D&M
-
-@buffer
-M=D
-
-@Li
-D=M
-
-@FUNCTION
-D=D|M
-
-@buffer1
-M=D
-
-@buffer
-D=!M
-
-@buffer1
-D=D&M
-@R2
-M=D
+(FINISHED)
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 //// Start adding the left 8 bits and the right 8bits together ////
 
-// Reset the right shift counter for the use to shift the right part to the left
+// Reset the right shift counter for the use to shift the left part back to its original place
 @8
 D=A
 // Store the value 8 in the memory location RSCOUNT
@@ -366,8 +246,8 @@ D=M
 @DONE
 D;JEQ
 
-// Shift to the left by adding the value in R3 to itself using the Data register and Memory register
-@R2
+// Shift to the left by adding the value in R2 to itself using the Data register and Memory register
+@R3
 D=M
 M=M+D
 
