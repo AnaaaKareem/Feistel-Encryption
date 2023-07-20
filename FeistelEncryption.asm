@@ -92,7 +92,7 @@ M=M+D
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 // Create an encryption counter for the first 3 rounds
-@4
+
 D=A
 // Store the value three in the variable ENCRYPTCOUNT
 @ENCRYPTCOUNT
@@ -103,7 +103,7 @@ M=D
 (ENCRYPTLOOP)
 @ENCRYPTCOUNT
 D=M
-@FINISHED
+
 D;JEQ
 
 /// Store Li ///
