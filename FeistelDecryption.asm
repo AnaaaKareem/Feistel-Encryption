@@ -151,6 +151,11 @@ D=M
 @FINISHED
 D;JEQ
 
+@7
+D=A
+@PREVKEYCOUNT
+M=D
+
 /// Store Li ///
 // Load the Li using the Address register to the Data register to store it
 @R2
@@ -241,6 +246,12 @@ M=D
 
 //// Rotate Key ////
 
+(PREVKEYLOOP)
+@PREVKEYCOUNT
+D=M
+@PREVKEYDONE
+D;JEQ
+
 // Check if the MSB is 1
 @R1
 D=M
@@ -264,8 +275,13 @@ M=D
 @R1
 D=M
 M=M+D
-
 (SKIP)
+@PREVKEYCOUNT
+M=M-1
+@PREVKEYLOOP
+0;JMP
+
+(PREVKEYDONE)
 @ENCRYPTCOUNT
 M=M-1
 @ENCRYPTLOOP
