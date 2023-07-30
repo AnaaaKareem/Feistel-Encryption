@@ -159,25 +159,25 @@ D=M
 @FINISHED
 D;JEQ
 
-/// Store Li ///
-// Load the Li using the Address register to the Data register to store it
-@R3
-D=M
-// Store Li in the Data register to the Memory register to be used to calculate the Ri+1
-@Li
-M=D
-
-/// Li+1 = Ri ///
-// Load Ri 
+/// Store Ri+1 ///
+// Load the Ri+1 using the Address register to the Data register to store it
 @R2
 D=M
-// Store it to create Li+1
-@R3
+// Store Ri+1 in the Data register to the Memory register to be used to calculate the Li
+@Ri+1
 M=D
 
-// F(Ri, Ki) = Ri ⊕ ¬Ki //
-
+/// Ri = Li+1 ///
+// Load Li+1
+@R3
+D=M
+// Store it to create Ri
 @R2
+M=D
+
+// F(Li+1, Ki) = Li+1 ⊕ ¬Ki //
+
+@R3
 D=M
 
 @R1
@@ -186,7 +186,7 @@ D=D&M
 @buffer
 M=D
 
-@R2
+@R3
 D=M
 
 @R1
@@ -203,9 +203,9 @@ D=D&M
 @FUNCTION
 M=D
 
-// Ri+1 = Li ⊕ F(Ri, Ki) //
+// Li = Ri+1 ⊕ F(Li+1, Ki) //
 
-@Li
+@Ri+1
 D=M
 
 @FUNCTION
@@ -214,7 +214,7 @@ D=D&M
 @buffer
 M=D
 
-@Li
+@Ri+1
 D=M
 
 @FUNCTION
@@ -228,10 +228,20 @@ D=!M
 
 @buffer1
 D=D&M
-@R2
+@R3
 M=D
 
+@7
+D=A
+@7COUNTER
+M=D
 //// Rotate Key ////
+
+(ROTATE7)
+@7COUNTER
+D=M
+@DONE7
+D;JEQ
 
 // Check if the MSB is 1
 @R1
@@ -256,8 +266,14 @@ M=D
 @R1
 D=M
 M=M+D
-
 (SKIP)
+
+@7COUNTER
+M=M-1
+@ROTATE7
+0;JMP
+(DONE7)
+
 @ENCRYPTCOUNT
 M=M-1
 @ENCRYPTLOOP
