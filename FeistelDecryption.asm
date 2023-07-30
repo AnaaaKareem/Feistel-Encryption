@@ -119,7 +119,7 @@ D=M+D
 D=D&A
 @R1
 M=D
-@SKIP
+@SKIPSHIFT
 0;JMP
 
 (SHIFTLASTKEY)
@@ -127,7 +127,7 @@ M=D
 D=M
 M=M+D
 
-(SKIP)
+(SKIPSHIFT)
 @LASTKEYCOUNT
 M=M-1
 @LASTKEYLOOP
@@ -136,7 +136,15 @@ M=M-1
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Create an encryption counter for the first 3 rounds
+// ¬Ki //
+@R1
+D=!M
+@255
+D=D&A
+@R1
+M=D
+
+// Create an encryption counter for the first 4 rounds
 @4
 D=A
 // Store the value three in the variable ENCRYPTCOUNT
@@ -151,105 +159,88 @@ D=M
 @FINISHED
 D;JEQ
 
+/// Store Ri+1 ///
+// Load the Ri+1 using the Address register to the Data register to store it
+@R2
+D=M
+// Store Ri+1 in the Data register to the Memory register to be used to calculate the Li
+@Ri+1
+M=D
+
+/// Ri = Li+1 ///
+// Load Li+1
+@R3
+D=M
+// Store it to create Ri
+@R2
+M=D
+
+// F(Li+1, Ki) = Li+1 ⊕ ¬Ki //
+
+@R3
+D=M
+
+@R1
+D=D&M
+
+@buffer
+M=D
+
+@R3
+D=M
+
+@R1
+D=D|M
+
+@buffer1
+M=D
+
+@buffer
+D=!M
+
+@buffer1
+D=D&M
+@FUNCTION
+M=D
+
+// Li = Ri+1 ⊕ F(Li+1, Ki) //
+
+@Ri+1
+D=M
+
+@FUNCTION
+D=D&M
+
+@buffer
+M=D
+
+@Ri+1
+D=M
+
+@FUNCTION
+D=D|M
+
+@buffer1
+M=D
+
+@buffer
+D=!M
+
+@buffer1
+D=D&M
+@R3
+M=D
+
 @7
 D=A
-@PREVKEYCOUNT
+@7COUNTER
 M=D
-
-/// Store Li ///
-// Load the Li using the Address register to the Data register to store it
-@R2
-D=M
-// Store Li in the Data register to the Memory register to be used to calculate the Ri+1
-@Ri
-M=D
-
-/// Li+1 = Ri ///
-// Load Ri 
-@R3
-D=M
-// Store it to create Li+1
-@R2
-M=D
-
-// ¬Ki //
-@R1
-D=!M
-@255
-D=D&A
-@R1
-M=D
-
-// F(Ri, Ki) = Ri ⊕ ¬Ki //
-
-@R3
-D=M
-
-@R1
-D=D&M
-
-@buffer
-M=D
-
-@R3
-D=M
-
-@R1
-D=D|M
-
-@buffer1
-M=D
-
-@buffer
-D=!M
-
-@buffer1
-D=D&M
-@FUNCTION
-M=D
-
-// Ki //
-@R1
-D=!M
-@255
-D=D&A
-@R1
-M=D
-
-// Ri+1 = Li ⊕ F(Ri, Ki) //
-
-@Ri
-D=M
-
-@FUNCTION
-D=D&M
-
-@buffer
-M=D
-
-@Ri
-D=M
-
-@FUNCTION
-D=D|M
-
-@buffer1
-M=D
-
-@buffer
-D=!M
-
-@buffer1
-D=D&M
-@R2
-M=D
-
 //// Rotate Key ////
 
-(PREVKEYLOOP)
-@PREVKEYCOUNT
+(ROTATE7)
+@7COUNTER
 D=M
-@PREVKEYDONE
+@DONE7
 D;JEQ
 
 // Check if the MSB is 1
@@ -276,12 +267,13 @@ M=D
 D=M
 M=M+D
 (SKIP)
-@PREVKEYCOUNT
-M=M-1
-@PREVKEYLOOP
-0;JMP
 
-(PREVKEYDONE)
+@7COUNTER
+M=M-1
+@ROTATE7
+0;JMP
+(DONE7)
+
 @ENCRYPTCOUNT
 M=M-1
 @ENCRYPTLOOP
@@ -321,11 +313,6 @@ M=M-1
 
 // The shifting is done
 (DONE)
-
-@R0
-D=M
-@BEGINNING
-D;JNE
 
 // Load the left that is in R2 then store it in the Data register
 @R2

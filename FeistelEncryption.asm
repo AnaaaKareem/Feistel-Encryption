@@ -91,7 +91,15 @@ M=M+D
 
 /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// Create an encryption counter for the first 3 rounds
+// ¬Ki //
+@R1
+D=!M
+@255
+D=D&A
+@R1
+M=D
+
+// Create an encryption counter for the first 4 rounds
 @4
 D=A
 // Store the value three in the variable ENCRYPTCOUNT
@@ -122,14 +130,6 @@ D=M
 @R3
 M=D
 
-// ¬Ki //
-@R1
-D=!M
-@255
-D=D&A
-@R1
-M=D
-
 // F(Ri, Ki) = Ri ⊕ ¬Ki //
 
 @R2
@@ -156,14 +156,6 @@ D=!M
 @buffer1
 D=D&M
 @FUNCTION
-M=D
-
-// Ki //
-@R1
-D=!M
-@255
-D=D&A
-@R1
 M=D
 
 // Ri+1 = Li ⊕ F(Ri, Ki) //
@@ -247,7 +239,7 @@ D=M
 D;JEQ
 
 // Shift to the left by adding the value in R2 to itself using the Data register and Memory register
-@R3
+@R2
 D=M
 M=M+D
 
@@ -260,11 +252,6 @@ M=M-1
 
 // The shifting is done
 (DONE)
-
-@R0
-D=M
-@BEGINNING
-D;JNE
 
 // Load the left that is in R2 then store it in the Data register
 @R2
