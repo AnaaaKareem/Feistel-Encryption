@@ -1,6 +1,6 @@
 (BEGINNING)
 
-// If this RAM slot is reset to zero perform new encryption calculations otherwise keep looping until a new value is required to encrypt
+// If this RAM slot is reset to zero perform new decryption calculations otherwise keep looping until a new value is required to decrypt
 @R0
 D=M
 @BEGINNING
@@ -35,7 +35,7 @@ D=D+A
 @MSB
 M=D
 
-//// Rotate bits of the 8 bits on the left 8 times which is equivalent to right shifting to be used in the encryption operations ////
+//// Rotate bits of the 8 bits on the left 8 times which is equivalent to right shifting to be used in the decryption operations ////
 
 // Use the address register to store the value 8 in the data register which is used for counting
 @8
@@ -144,17 +144,17 @@ D=D&A
 @R1
 M=D
 
-// Create an encryption counter for the first 4 rounds
+// Create an decryption counter for the first 4 rounds
 @4
 D=A
-// Store the value three in the variable ENCRYPTCOUNT
-@ENCRYPTCOUNT
+// Store the value three in the variable DECRYPTCOUNT
+@DECRYPTCOUNT
 M=D
 
-//// Start the encryption process ////
+//// Start the decryption process ////
 
-(ENCRYPTLOOP)
-@ENCRYPTCOUNT
+(DECRYPTLOOP)
+@DECRYPTCOUNT
 D=M
 @FINISHED
 D;JEQ
@@ -274,9 +274,9 @@ M=M-1
 0;JMP
 (DONE7)
 
-@ENCRYPTCOUNT
+@DECRYPTCOUNT
 M=M-1
-@ENCRYPTLOOP
+@DECRYPTLOOP
 0;JMP
 (FINISHED)
 
@@ -291,7 +291,7 @@ D=A
 @RSCOUNT
 M=D
 
-// Check of the counter is equal to zero if ture jump to DONE if false continue
+// Check of the counter is equal to zero if true jump to DONE if false continue
 (SHIFT)
 @RSCOUNT
 D=M
