@@ -161,7 +161,7 @@ D;JEQ
 
 /// Store Ri+1 ///
 // Load the Ri+1 using the Address register to the Data register to store it
-@R2
+@R3
 D=M
 // Store Ri+1 in the Data register to the Memory register to be used to calculate the Li
 @Ri+1
@@ -169,15 +169,15 @@ M=D
 
 /// Ri = Li+1 ///
 // Load Li+1
-@R3
+@R2
 D=M
 // Store it to create Ri
-@R2
+@R3
 M=D
 
 // F(Li+1, Ki) = Li+1 ⊕ ¬Ki //
 
-@R3
+@R2
 D=M
 
 @R1
@@ -186,7 +186,7 @@ D=D&M
 @buffer
 M=D
 
-@R3
+@R2
 D=M
 
 @R1
@@ -228,7 +228,7 @@ D=!M
 
 @buffer1
 D=D&M
-@R3
+@R2
 M=D
 
 @7
@@ -300,7 +300,7 @@ D=M
 D;JEQ
 
 // Shift to the left by adding the value in R2 to itself using the Data register and Memory register
-@R3
+@R2
 D=M
 M=M+D
 
