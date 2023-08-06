@@ -152,4 +152,4 @@ L0 = R1 ⊕ F(L1, K0)
 L0 = 0100 1001 ⊕ 1001 1100 = 1101 0101
 L0 = 1101 0101
 
-Final Value After Encryption: 1101 0101 1010 1111
+Final Value After Decryption: 1101 0101 1010 1111
