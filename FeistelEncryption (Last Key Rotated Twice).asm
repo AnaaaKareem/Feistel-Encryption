@@ -99,13 +99,14 @@ D=D&A
 @R1
 M=D
 
-// Create an encryption counter for the first 4 rounds
+// Create an encryption counter for the first 3 rounds when the counter hits zero rotate the last key twice
 @3
 D=A
 // Store the value three in the variable ENCRYPTCOUNT
 @ENCRYPTCOUNT
 M=D
 
+// Create a counter for all rounds 
 @4
 D=A
 @FINALENCRYPT
@@ -114,17 +115,23 @@ M=D
 //// Start the encryption process ////
 
 (ENCRYPTLOOP)
+
+// Jump to encrypt when the counter is bigger than zero
 @ENCRYPTCOUNT
 D=M
 @ENCRYPT
 D;JNE
 
+// When the first three rounds are done rotate the last key again
 @SECONDROTATE
 0;JMP
 
 (ENCRYPT)
+
+// Before encrypting subtract the overall encryption counter
 @FINALENCRYPT
 M=M-1
+
 /// Store Li ///
 // Load the Li using the Address register to the Data register to store it
 @R3
@@ -203,6 +210,7 @@ D=M
 D;JEQ
 
 //// Rotate Key ////
+
 (SECONDROTATE)
 // Check if the MSB is 1
 @R1
@@ -228,12 +236,13 @@ M=D
 D=M
 M=M+D
 
+(SKIP)
+// Check if the first three rounds are done
 @ENCRYPTCOUNT
 D=M
 @ENCRYPT
 D;JEQ
 
-(SKIP)
 @ENCRYPTCOUNT
 M=M-1
 @ENCRYPTLOOP

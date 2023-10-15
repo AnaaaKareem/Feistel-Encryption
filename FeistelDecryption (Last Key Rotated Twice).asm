@@ -151,6 +151,7 @@ D=A
 @DECRYPTCOUNT
 M=D
 
+// A counter used to check if the first rotation for the 3 key is done to rotate again
 @8
 D=A
 @AGAIN
@@ -236,11 +237,13 @@ D=D&M
 @R2
 M=D
 
-
 (THIRDKEY)
+
+// Subtract the counter once before and after the first rotations are done
 @AGAIN
 M=M-1
 
+// Counter for rotating the key for right shifting
 @7
 D=A
 @7COUNTER
@@ -249,11 +252,13 @@ M=D
 
 (ROTATE7)
 
+// Check if the first 7 rotations are done to start rotating again
 @AGAIN
 D=M
 @THIRDKEY
 D;JEQ
 
+// If the rotation counter is done
 @7COUNTER
 D=M
 @DONE7
@@ -290,8 +295,8 @@ M=M-1
 M=M-1
 @ROTATE7
 0;JMP
-(DONE7)
 
+(DONE7)
 @DECRYPTCOUNT
 M=M-1
 @DECRYPTLOOP
